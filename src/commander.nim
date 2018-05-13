@@ -38,6 +38,7 @@ proc init_connection(params: varargs[string]): string =
   echo("init server on port ", params[0])
   subscribe("authentication", authentication)
   tcp_server.start_server(parseInt(params[0]))
+  echo "init_connection"
     
 proc defaults(): void =
   clientstore.init("dev.db")
@@ -50,12 +51,13 @@ proc start*(params: string): void =
   echo("Mod ", modi)
   defaults()
   start_cmd(params)
-
+  runForever()
+  
 proc start*(): void =
   modi = "repl"
   echo("Mod ", modi)
   defaults()  
-  waitFor start_repl()
+  start_repl()
     
 var cmd_params: string
 if paramCount() > 0:
